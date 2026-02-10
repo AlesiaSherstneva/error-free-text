@@ -1,3 +1,16 @@
+server:
+  servlet:
+    context-path: /api/v1
+
 spring:
   application:
     name: error-free-text
+  datasource:
+    url:  jdbc:postgresql://localhost:5433/error-free-text-db
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
