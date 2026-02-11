@@ -1,0 +1,43 @@
+databaseChangeLog:
+  - changeSet:
+      id: "01"
+      author: alesia.sharstniova@innowise.com
+      changes:
+        - createTable:
+            tableName: "tasks"
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: original_text
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: corrected_text
+                  type: TEXT
+              - column:
+                  name: language
+                  type: VARCHAR(2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: VARCHAR(10)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: error_message
+                  type: VARCHAR(30)
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: TIMESTAMP

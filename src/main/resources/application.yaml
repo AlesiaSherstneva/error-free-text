@@ -12,5 +12,8 @@ spring:
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate
     show-sql: true
+  liquibase:
+    enabled: true
+    change-log: db/changelog/db.changelog-master.yaml
