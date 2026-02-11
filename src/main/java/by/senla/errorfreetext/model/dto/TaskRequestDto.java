@@ -1,5 +1,6 @@
 package by.senla.errorfreetext.model.dto;
 
+import by.senla.errorfreetext.model.entity.enums.Language;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -15,5 +16,5 @@ public class TaskRequestDto {
 
     @NotBlank(message = "Language parameter is required")
     @Pattern(regexp = "^(EN|RU)$", message = "Language must be either EN or RU")
-    private String language;
+    private Language language;
 }
