@@ -2,6 +2,7 @@ package by.senla.errorfreetext.service;
 
 import by.senla.errorfreetext.model.dto.TaskRequestDto;
 import by.senla.errorfreetext.model.dto.TaskResponseDto;
+import by.senla.errorfreetext.model.dto.mapper.TaskMapper;
 import by.senla.errorfreetext.model.entity.Task;
 import by.senla.errorfreetext.repository.TaskRepository;
 import by.senla.errorfreetext.util.Constant;
@@ -13,18 +14,18 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class TaskService {
     private final TaskRepository taskRepository;
+    private final TaskMapper taskMapper;
 
     @Transactional
     public TaskResponseDto createTask(TaskRequestDto request) {
-        if (!request.getText().matches(Constant.TEXT_VALIDATION_PATTERN)) {
-            throw new IllegalArgumentException("Text cannot contain only digits and special characters");
+        if (request.getText().matches(Constant.ONLY_SPECIALS_PATTERN)) {
+            throw new IllegalArgumentException(Constant.ONLY_SPECIALS_EXC_MESSAGE);
         }
 
-        Task newTask = Task.builder()
-                .originalText(request.getText())
-                .language(request.getLanguage())
-                .build();
+        Task newTask = taskMapper.toEntity(request);
 
-        return null;
+        Task createdTask = taskRepository.save(newTask);
+
+        return taskMapper.toDto(createdTask);
     }
 }
