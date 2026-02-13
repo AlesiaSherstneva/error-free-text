@@ -10,7 +10,7 @@ import java.util.UUID;
 @Data
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class TaskResponseDto {
+public class TaskResultResponseDto {
     private UUID id;
     private Status status;
     private String correctedText;

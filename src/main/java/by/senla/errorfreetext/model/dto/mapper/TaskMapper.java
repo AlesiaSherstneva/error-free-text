@@ -1,7 +1,8 @@
 package by.senla.errorfreetext.model.dto.mapper;
 
+import by.senla.errorfreetext.model.dto.TaskCreatedResponseDto;
 import by.senla.errorfreetext.model.dto.TaskRequestDto;
-import by.senla.errorfreetext.model.dto.TaskResponseDto;
+import by.senla.errorfreetext.model.dto.YandexSpellerRequestDto;
 import by.senla.errorfreetext.model.entity.Task;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -13,5 +14,9 @@ public interface TaskMapper {
     @Mapping(source = "text", target = "originalText")
     Task toEntity(TaskRequestDto dto);
 
-    TaskResponseDto toDto(Task task);
+    TaskCreatedResponseDto toCreatedResponseDto(Task task);
+
+    @Mapping(source = "originalText", target = "text")
+    @Mapping(source = "language", target = "lang")
+    YandexSpellerRequestDto toYandexRequestDto(Task task);
 }

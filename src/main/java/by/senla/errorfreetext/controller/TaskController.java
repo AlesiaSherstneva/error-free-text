@@ -1,7 +1,8 @@
 package by.senla.errorfreetext.controller;
 
+import by.senla.errorfreetext.model.dto.TaskCreatedResponseDto;
 import by.senla.errorfreetext.model.dto.TaskRequestDto;
-import by.senla.errorfreetext.model.dto.TaskResponseDto;
+import by.senla.errorfreetext.model.dto.YandexSpellerResponseDto;
 import by.senla.errorfreetext.service.TaskService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -22,14 +24,16 @@ public class TaskController {
     private final TaskService taskService;
 
     @PostMapping
-    public ResponseEntity<TaskResponseDto> createTask(@RequestBody @Valid TaskRequestDto request) {
-        TaskResponseDto response = taskService.createTask(request);
+    public ResponseEntity<TaskCreatedResponseDto> createTask(@RequestBody @Valid TaskRequestDto request) {
+        TaskCreatedResponseDto response = taskService.createTask(request);
 
         return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TaskResponseDto> getTask(@PathVariable UUID id) {
-        return null;
+    public ResponseEntity<List<List<YandexSpellerResponseDto>>> getTask(@PathVariable UUID id) {
+        List<List<YandexSpellerResponseDto>> response = taskService.getTaskResult(id);
+
+        return ResponseEntity.ok(response);
     }
 }

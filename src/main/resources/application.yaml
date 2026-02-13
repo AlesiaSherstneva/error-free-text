@@ -17,3 +17,10 @@ spring:
   liquibase:
     enabled: true
     change-log: db/changelog/db.changelog-master.yaml
+
+yandex:
+  api:
+    url: https://speller.yandex.net/services/spellservice.json
+    connect-timeout: 5000
+    read-timeout: 10000
+    max-text-size: 10000
