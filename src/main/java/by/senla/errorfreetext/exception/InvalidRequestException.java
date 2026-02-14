@@ -4,6 +4,11 @@ import by.senla.errorfreetext.model.dto.enums.ErrorCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+/**
+ * Exception thrown when a client request is invalid.
+ * Used for business rule violations (text contains only special characters,
+ * invalid language, task not found).
+ */
 @Getter
 @RequiredArgsConstructor
 public class InvalidRequestException extends RuntimeException {

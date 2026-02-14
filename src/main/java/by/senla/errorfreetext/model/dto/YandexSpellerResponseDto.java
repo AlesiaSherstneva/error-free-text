@@ -4,6 +4,10 @@ import lombok.Data;
 
 import java.util.List;
 
+/**
+ * Response data transfer object from Yandex Speller API for a single error.
+ * Exactly matches the JSON response structure of Yandex Speller API.
+ */
 @Data
 public class YandexSpellerResponseDto {
     private int code;

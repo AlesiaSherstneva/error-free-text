@@ -1,12 +1,18 @@
 package by.senla.errorfreetext.util;
 
 import by.senla.errorfreetext.model.dto.YandexSpellerResponseDto;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Utility class for text processing operations.
+ * Provides methods for splitting text, calculating API options, and applying corrections.
+ */
+@Slf4j
 @Component
 public class TextUtils {
     private static final int IGNORE_DIGITS_OPTION = 2;
@@ -15,6 +21,13 @@ public class TextUtils {
     @Value("${yandex.api.max-text-size}")
     private int maxTextSize;
 
+    /**
+     * Splits text into parts that fit within Yandex API size limit.
+     * Attempts to split at word boundaries when possible.
+     *
+     * @param text the original text to split
+     * @return list of text parts, each not exceeding maxTextSize
+     */
     public List<String> splitText(String text) {
         if (text.length() <= maxTextSize) {
             return List.of(text);
@@ -46,6 +59,14 @@ public class TextUtils {
         return endOfPart;
     }
 
+    /**
+     * Calculates Yandex Speller API options based on text content.
+     * Enables IGNORE_DIGITS if text contains numbers.
+     * Enables IGNORE_URLS if text contains URLs.
+     *
+     * @param text the text to analyze
+     * @return bitmask of enabled options
+     */
     public int calculateOptions(String text) {
         int options = 0;
 
@@ -60,6 +81,14 @@ public class TextUtils {
         return options;
     }
 
+    /**
+     * Applies corrections from Yandex API to the original text parts.
+     * Combines corrected parts back into a single text.
+     *
+     * @param parts the original text parts
+     * @param corrections list of corrections for each part
+     * @return fully corrected text
+     */
     public String applyCorrections(List<String> parts, List<List<YandexSpellerResponseDto>> corrections) {
         StringBuilder result = new StringBuilder();
 

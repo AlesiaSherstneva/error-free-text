@@ -9,6 +9,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Request data transfer object for creating a new text correction task.
+ * Contains the text to be corrected and the target language.
+ */
 @Data
 @Builder
 @NoArgsConstructor

@@ -7,6 +7,10 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 
+/**
+ * Standard error response data transfer object for all API error responses.
+ * Provides consistent error format across the application.
+ */
 @Data
 @Builder
 public class ErrorResponseDto {

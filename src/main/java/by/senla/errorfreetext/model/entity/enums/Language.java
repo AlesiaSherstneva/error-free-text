@@ -7,9 +7,20 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Arrays;
 
+/**
+ * Supported languages for text correction.
+ */
 public enum Language {
     RU, EN;
 
+    /**
+     * Creates a Language enum from string value.
+     * Used by Jackson for deserializing JSON requests.
+     *
+     * @param value the language string (case-insensitive, accepts "ru" or "en")
+     * @return matching Language enum
+     * @throws InvalidRequestException if value doesn't match any language
+     */
     @JsonCreator
     public static Language fromString(String value) {
         return Arrays.stream(Language.values())

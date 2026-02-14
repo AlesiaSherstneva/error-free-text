@@ -5,6 +5,10 @@ import lombok.Data;
 
 import java.util.List;
 
+/**
+ * Request data transfer object for Yandex Speller API.
+ * Contains text parts to be checked and spell checking parameters.
+ */
 @Data
 @Builder
 public class YandexSpellerRequestDto {

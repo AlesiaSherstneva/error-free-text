@@ -21,6 +21,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+/**
+ * Entity class with represents a correction text task.
+ */
 @Entity
 @Table(name = "tasks")
 @Getter
@@ -36,7 +39,7 @@ public class Task {
     @Column(name = "original_text", columnDefinition = "TEXT", nullable = false)
     private String originalText;
 
-    @Column(name = "corrected_text", columnDefinition = "TEXT", nullable = false)
+    @Column(name = "corrected_text", columnDefinition = "TEXT")
     private String correctedText;
 
     @Column(name = "language", nullable = false)
@@ -51,7 +54,7 @@ public class Task {
     @Column(name = "error_message")
     private String errorMessage;
 
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "created_at", nullable = false, updatable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
 
