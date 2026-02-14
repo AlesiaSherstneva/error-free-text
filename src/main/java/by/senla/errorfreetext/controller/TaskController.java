@@ -27,7 +27,7 @@ import java.util.UUID;
 @RequestMapping("/tasks")
 @RequiredArgsConstructor
 public class TaskController {
-    private final TaskService taskService;
+    private final TaskService taskServiceImpl;
 
     /**
      * Creates a new correction task.
@@ -40,9 +40,7 @@ public class TaskController {
         log.info("Received request to create new task. Language: {}, Text length: {}",
                 request.getLanguage(), request.getText().length());
 
-        TaskCreatedResponseDto response = taskService.createTask(request);
-
-        log.info("Task created successfully with ID: {}", response.getId());
+        TaskCreatedResponseDto response = taskServiceImpl.createTask(request);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -57,9 +55,7 @@ public class TaskController {
     public ResponseEntity<TaskResultResponseDto> getTask(@PathVariable UUID id) {
         log.info("Received request to get task result for ID: {}", id);
 
-        TaskResultResponseDto response = taskService.getTaskResult(id);
-
-        log.debug("Task {} retrieved with status: {}", id, response.getStatus());
+        TaskResultResponseDto response = taskServiceImpl.getTaskResult(id);
 
         return ResponseEntity.ok(response);
     }
