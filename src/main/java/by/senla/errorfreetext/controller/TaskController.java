@@ -6,6 +6,7 @@ import by.senla.errorfreetext.model.dto.TaskResultResponseDto;
 import by.senla.errorfreetext.service.TaskService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,7 +27,7 @@ public class TaskController {
     public ResponseEntity<TaskCreatedResponseDto> createTask(@RequestBody @Valid TaskRequestDto request) {
         TaskCreatedResponseDto response = taskService.createTask(request);
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping("/{id}")

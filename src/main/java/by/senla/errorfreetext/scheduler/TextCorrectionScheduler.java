@@ -1,6 +1,7 @@
 package by.senla.errorfreetext.scheduler;
 
 import by.senla.errorfreetext.client.YandexSpellerClient;
+import by.senla.errorfreetext.exception.YandexApiException;
 import by.senla.errorfreetext.model.dto.YandexSpellerRequestDto;
 import by.senla.errorfreetext.model.dto.YandexSpellerResponseDto;
 import by.senla.errorfreetext.model.dto.mapper.TaskMapper;
@@ -44,8 +45,9 @@ public class TextCorrectionScheduler {
 
             task.setCorrectedText(correctedText);
             task.setStatus(Status.COMPLETED);
-        } catch (Exception ex) {
+        } catch (YandexApiException ex) {
             task.setStatus(Status.FAILED);
+            task.setErrorMessage(ex.getMessage());
         } finally {
             taskRepository.save(task);
         }
