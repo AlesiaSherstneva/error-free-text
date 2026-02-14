@@ -2,6 +2,7 @@ package by.senla.errorfreetext.model.dto.mapper;
 
 import by.senla.errorfreetext.model.dto.TaskCreatedResponseDto;
 import by.senla.errorfreetext.model.dto.TaskRequestDto;
+import by.senla.errorfreetext.model.dto.TaskResultResponseDto;
 import by.senla.errorfreetext.model.dto.YandexSpellerRequestDto;
 import by.senla.errorfreetext.model.entity.Task;
 import by.senla.errorfreetext.util.TextUtils;
@@ -22,4 +23,6 @@ public interface TaskMapper {
     @Mapping(source = "language", target = "lang")
     @Mapping(source = "originalText", target = "options")
     YandexSpellerRequestDto toYandexRequestDto(Task task);
+
+    TaskResultResponseDto toResultResponseDto(Task task);
 }

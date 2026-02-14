@@ -1,9 +1,8 @@
 package by.senla.errorfreetext.service;
 
-import by.senla.errorfreetext.client.YandexSpellerClient;
 import by.senla.errorfreetext.model.dto.TaskCreatedResponseDto;
 import by.senla.errorfreetext.model.dto.TaskRequestDto;
-import by.senla.errorfreetext.model.dto.YandexSpellerResponseDto;
+import by.senla.errorfreetext.model.dto.TaskResultResponseDto;
 import by.senla.errorfreetext.model.dto.mapper.TaskMapper;
 import by.senla.errorfreetext.model.entity.Task;
 import by.senla.errorfreetext.repository.TaskRepository;
@@ -12,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -20,7 +18,6 @@ import java.util.UUID;
 public class TaskService {
     private final TaskRepository taskRepository;
     private final TaskMapper taskMapper;
-    private final YandexSpellerClient yandexSpellerClient;
 
     @Transactional
     public TaskCreatedResponseDto createTask(TaskRequestDto request) {
@@ -36,9 +33,9 @@ public class TaskService {
     }
 
     @Transactional
-    public List<List<YandexSpellerResponseDto>> getTaskResult(UUID id) {
-        Task task = taskRepository.getTaskById(id);
+    public TaskResultResponseDto getTaskResult(UUID id) {
+        Task taskInDb = taskRepository.getTaskById(id);
 
-        return yandexSpellerClient.checkTexts(taskMapper.toYandexRequestDto(task));
+        return taskMapper.toResultResponseDto(taskInDb);
     }
 }

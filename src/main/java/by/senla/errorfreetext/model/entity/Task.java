@@ -46,7 +46,7 @@ public class Task {
     @Column(name = "status", nullable = false)
     @Builder.Default
     @Enumerated(EnumType.STRING)
-    private Status status = Status.NEW;
+    private Status status = Status.PENDING;
 
     @Column(name = "error_message")
     private String errorMessage;
