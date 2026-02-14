@@ -1,8 +1,10 @@
 package by.senla.errorfreetext.service;
 
+import by.senla.errorfreetext.exception.InvalidRequestException;
 import by.senla.errorfreetext.model.dto.TaskCreatedResponseDto;
 import by.senla.errorfreetext.model.dto.TaskRequestDto;
 import by.senla.errorfreetext.model.dto.TaskResultResponseDto;
+import by.senla.errorfreetext.model.dto.enums.ErrorCode;
 import by.senla.errorfreetext.model.dto.mapper.TaskMapper;
 import by.senla.errorfreetext.model.entity.Task;
 import by.senla.errorfreetext.repository.TaskRepository;
@@ -34,7 +36,10 @@ public class TaskService {
 
     @Transactional
     public TaskResultResponseDto getTaskResult(UUID id) {
-        Task taskInDb = taskRepository.getTaskById(id);
+        Task taskInDb = taskRepository.getTaskById(id)
+                .orElseThrow(() -> new InvalidRequestException(
+                        Constant.TASK_NOT_FOUND_EXC_MESSAGE.formatted(id), ErrorCode.TASK_NOT_FOUND)
+                );
 
         return taskMapper.toResultResponseDto(taskInDb);
     }
