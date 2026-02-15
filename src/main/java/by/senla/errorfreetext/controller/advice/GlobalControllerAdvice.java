@@ -7,8 +7,8 @@ import by.senla.errorfreetext.util.Constant;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -37,7 +37,7 @@ public class GlobalControllerAdvice {
 
         ErrorResponseDto response = ErrorResponseDto.builder()
                 .errorMessage(ex.getMessage())
-                .errorCode(ex.getErrorCode())
+                .errorCode(ex.getErrorCode().getCode())
                 .path(request.getRequestURI())
                 .build();
 
@@ -63,7 +63,7 @@ public class GlobalControllerAdvice {
 
         ErrorResponseDto errorResponse = ErrorResponseDto.builder()
                 .errorMessage(Constant.VALIDATION_FAILED_EXC_MESSAGE.formatted(errorDetails))
-                .errorCode(ErrorCode.VALIDATION_FAILED)
+                .errorCode(ErrorCode.VALIDATION_FAILED.getCode())
                 .path(request.getRequestURI())
                 .build();
 
@@ -71,24 +71,35 @@ public class GlobalControllerAdvice {
     }
 
     /**
-     * Handles data integrity violations.
+     * Handles JSON parsing errors during request deserialization.
+     * Unwraps the exception chain to find custom InvalidRequestException.
      *
-     * @param ex the DataIntegrityViolationException
+     * @param ex the HttpMessageNotReadableException thrown during deserialization
      * @param request the HTTP request
-     * @return ResponseEntity with database error details
+     * @return ResponseEntity with error details
      */
-    @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<ErrorResponseDto> handleDataViolationException(DataIntegrityViolationException ex,
-                                                                         HttpServletRequest request) {
-        log.error("Data integrity violation: {} for path: {}", ex.getMessage(), request.getRequestURI(), ex);
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorResponseDto> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex,
+                                                                                  HttpServletRequest request) {
+        log.error("JSON parsing error for request to {}: {}", request.getRequestURI(), ex.getMessage());
+        log.debug("Exception chain:", ex);
 
-        ErrorResponseDto errorResponse = ErrorResponseDto.builder()
-                .errorMessage(Constant.DATABASE_ERROR_EXC_MESSAGE.formatted(ex.getMessage()))
-                .errorCode(ErrorCode.DATA_INTEGRITY_VIOLATION)
+        Throwable cause = ex.getCause();
+
+        while (cause != null) {
+            if (cause instanceof InvalidRequestException invalidEx) {
+                return handleInvalidRequestException(invalidEx, request);
+            }
+            cause = cause.getCause();
+        }
+
+        ErrorResponseDto response = ErrorResponseDto.builder()
+                .errorMessage(Constant.INVALID_REQUEST_FORMAT_EXC_MESSAGE.formatted(ex.getMessage()))
+                .errorCode(ErrorCode.INVALID_REQUEST_FORMAT.getCode())
                 .path(request.getRequestURI())
                 .build();
 
-        return ResponseEntity.status(ErrorCode.DATA_INTEGRITY_VIOLATION.getHttpStatus()).body(errorResponse);
+        return ResponseEntity.status(ErrorCode.INVALID_REQUEST_FORMAT.getHttpStatus()).body(response);
     }
 
     /**
@@ -105,7 +116,7 @@ public class GlobalControllerAdvice {
 
         ErrorResponseDto errorResponse = ErrorResponseDto.builder()
                 .errorMessage(Constant.DATABASE_ERROR_EXC_MESSAGE.formatted(ex.getMessage()))
-                .errorCode(ErrorCode.DATABASE_ERROR)
+                .errorCode(ErrorCode.DATABASE_ERROR.getCode())
                 .path(request.getRequestURI())
                 .build();
 
@@ -126,7 +137,7 @@ public class GlobalControllerAdvice {
 
         ErrorResponseDto errorResponse = ErrorResponseDto.builder()
                 .errorMessage(Constant.INTERNAL_SERVER_ERROR_EXC_MESSAGE.formatted(ex.getMessage()))
-                .errorCode(ErrorCode.INTERNAL_ERROR)
+                .errorCode(ErrorCode.INTERNAL_ERROR.getCode())
                 .path(request.getRequestURI())
                 .build();
 

@@ -11,6 +11,7 @@ public final class Constant {
 
     public static final String ONLY_SPECIALS_EXC_MESSAGE = "Text cannot contain only digits and special characters";
     public static final String INVALID_LANG_EXC_MESSAGE = "Invalid language code: %s. Must be EN or RU";
+    public static final String INVALID_REQUEST_FORMAT_EXC_MESSAGE = "Invalid request format: %s";
     public static final String TASK_NOT_FOUND_EXC_MESSAGE = "Task with id %s not found";
     public static final String INVALID_API_REQUEST_EXC_MESSAGE = "Invalid request to Yandex Speller API: %s";
     public static final String API_IS_UNAVAILABLE_EXC_MESSAGE = "Yandex Speller API is temporarily unavailable: %s";
