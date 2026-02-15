@@ -82,25 +82,25 @@ public class TextUtils {
     }
 
     /**
-     * Applies corrections from Yandex API to the original text parts.
-     * Combines corrected parts back into a single text.
+     * Applies corrections from Yandex API to the original text textParts.
+     * Combines corrected textParts back into a single text.
      *
-     * @param parts the original text parts
+     * @param textParts the original text textParts
      * @param corrections list of corrections for each part
      * @return fully corrected text
      */
-    public String applyCorrections(List<String> parts, List<List<YandexSpellerResponseDto>> corrections) {
+    public String applyCorrections(List<String> textParts, List<List<YandexSpellerResponseDto>> corrections) {
         StringBuilder result = new StringBuilder();
 
-        for (int i = 0; i < parts.size(); i++) {
-            result.append(correctPart(parts.get(i), corrections.get(i)));
+        for (int i = 0; i < textParts.size(); i++) {
+            result.append(correctPart(textParts.get(i), corrections.get(i)));
         }
 
         return result.toString();
     }
 
-    private StringBuilder correctPart(String part, List<YandexSpellerResponseDto> corrections) {
-        StringBuilder correctedPart = new StringBuilder(part);
+    private StringBuilder correctPart(String textPart, List<YandexSpellerResponseDto> corrections) {
+        StringBuilder correctedPart = new StringBuilder(textPart);
 
         if (corrections == null || corrections.isEmpty()) {
             return correctedPart;

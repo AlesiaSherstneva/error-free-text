@@ -1,5 +1,6 @@
 package by.senla.errorfreetext.model.dto;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.List;
@@ -9,6 +10,7 @@ import java.util.List;
  * Exactly matches the JSON response structure of Yandex Speller API.
  */
 @Data
+@Builder
 public class YandexSpellerResponseDto {
     private int code;
     private int pos;
