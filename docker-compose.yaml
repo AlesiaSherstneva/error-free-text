@@ -17,3 +17,16 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+
+  error-free-text:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: error-free-text
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+    ports:
+      - 8080:8080
+    depends_on:
+      postgres:
+        condition: service_healthy

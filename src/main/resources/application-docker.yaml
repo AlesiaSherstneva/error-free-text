@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: error-free-text
+  datasource:
+    url:  jdbc:postgresql://postgres:5432/error-free-text-db
+    username: postgres
+    password: postgres
