@@ -21,7 +21,7 @@ public class RestClientConfig {
     private int readTimeout;
 
     @Bean
-    public RestClient yandexRestClient(RestClient.Builder restClientBuilder) {
+    public RestClient yandexSpellerRestClient(RestClient.Builder restClientBuilder) {
         HttpClient httpClient = HttpClient.newBuilder()
                 .connectTimeout(Duration.ofMillis(connectTimeout))
                 .build();

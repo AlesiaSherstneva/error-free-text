@@ -10,6 +10,8 @@ public final class TestConstant {
     public static final String JSON_PATH_EXC_TIMESTAMP = "$.timestamp";
     public static final String JSON_PATH_EXC_PATH = "$.path";
 
+    public static final String CONTENT_TYPE_HEADER = "Content-Type";
+
     private TestConstant() {
     }
 }
