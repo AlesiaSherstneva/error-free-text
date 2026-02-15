@@ -1,5 +1,6 @@
 package by.senla.errorfreetext.client;
 
+import by.senla.errorfreetext.config.RestClientTestConfig;
 import by.senla.errorfreetext.converter.YandexSpellerRequestConverter;
 import by.senla.errorfreetext.exception.YandexApiException;
 import by.senla.errorfreetext.model.dto.YandexSpellerRequestDto;
@@ -16,12 +17,10 @@ import org.junit.jupiter.api.extension.MediaType;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.Primary;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import org.springframework.web.client.RestClient;
 
 import java.util.List;
 
@@ -34,23 +33,21 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
 @Import(Constant.class)
+@SpringBootTest(classes = {
+        YandexSpellerClient.class,
+        YandexSpellerRequestConverter.class,
+        RestClientTestConfig.class
+})
 class YandexSpellerClientTest {
     @RegisterExtension
     private static final WireMockExtension yandexApiMock = WireMockExtension.newInstance()
             .options(wireMockConfig().dynamicPort())
             .build();
 
-    @TestConfiguration
-    static class TestConfig {
-        @Bean
-        @Primary
-        public RestClient yandexSpellerMockRestClient() {
-            return RestClient.builder()
-                    .baseUrl(yandexApiMock.baseUrl())
-                    .build();
-        }
+    @DynamicPropertySource
+    static void configureProperties(DynamicPropertyRegistry registry) {
+        registry.add("wiremock.base-url", yandexApiMock::baseUrl);
     }
 
     @MockitoBean
